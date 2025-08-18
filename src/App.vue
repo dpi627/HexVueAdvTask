@@ -5,15 +5,13 @@
       <div class="col-md-8">
         <h2 class="mb-3">商品列表</h2>
         <div class="row">
-          <div class="col-md-4 mb-4">
+          <div v-for="prodcut in products" :key="prodcut.id" class="col-md-4 mb-4">
             <div class="card h-100">
-              <img
-                src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&amp;w=2065&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.1.0&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="card-img-top">
+              <img :src="prodcut.image" class="card-img-top">
               <div class="card-body">
-                <h5 class="card-title">耳罩式藍牙耳機</h5>
-                <p class="card-text">舒適配戴，支援降噪技術</p>
-                <p class="fw-bold text-primary">$ 2490</p>
+                <h5 class="card-title">{{ prodcut.name }}</h5>
+                <p class="card-text">{{ prodcut.description }}</p>
+                <p class="fw-bold text-primary">$ {{ prodcut.price }}</p>
                 <button class="btn btn-success w-100"> 加入購物車 </button>
               </div>
             </div>
@@ -51,7 +49,54 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+
+const products = ref([
+  {
+    "id": 1,
+    "name": "耳罩式藍牙耳機",
+    "description": "舒適配戴，支援降噪技術",
+    "price": 2490,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZWFycGhvbmV8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 2,
+    "name": "無線藍牙音箱",
+    "description": "高音質立體聲，防水設計",
+    "price": 1890,
+    "image": "https://images.unsplash.com/photo-1560701814-de5e72b8d346?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cG9ydGFibGUlMjBzcGVha2VyJTIwZ3JlZW58ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 3,
+    "name": "智慧型手機",
+    "description": "6.1吋螢幕，雙鏡頭設計",
+    "price": 15990,
+    "image": "https://images.unsplash.com/photo-1648962495517-8398a95fe12f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTA3fHxjZWxsJTIwcGhvbmV8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 4,
+    "name": "機械鍵盤",
+    "description": "青軸手感，RGB背光",
+    "price": 3290,
+    "image": "https://plus.unsplash.com/premium_photo-1685312182226-20af33367686?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fGtleWJvYXJkfGVufDB8fDB8fHww"
+  },
+  {
+    "id": 5,
+    "name": "智慧手錶",
+    "description": "健康監測，多種運動模式",
+    "price": 4990,
+    "image": "https://images.unsplash.com/photo-1557438159-51eec7a6c9e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHNtYXJ0JTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 6,
+    "name": "平板電腦",
+    "description": "10.9吋螢幕，256GB儲存空間",
+    "price": 18900,
+    "image": "https://images.unsplash.com/photo-1628591459313-a64214c5bfac?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fHRhYmxldHxlbnwwfHwwfHx8MA%3D%3D"
+  }
+])
+</script>
 
 <style scoped>
 body {
