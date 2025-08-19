@@ -11,7 +11,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{ prodcut.name }}</h5>
                 <p class="card-text text-secondary">{{ prodcut.description }}</p>
-                <p class="fw-bold text-primary">$ {{ prodcut.price }}</p>
+                <p class="fw-bold text-primary">$ {{ formatter(prodcut.price) }}</p>
                 <button @click.prevent="cartAdd(prodcut)" class="btn btn-success w-100"> 加入購物車 </button>
               </div>
             </div>
@@ -35,7 +35,9 @@
               </div>
               <div>
                 <span class="text-muted">$ {{ item.subtotalDisplay }}</span>
-                <button @click.prevent="cart.remove(item)" class="btn btn-sm btn-outline-danger ms-2"> 移除 </button>
+                <button @click.prevent="cart.remove(item)" class="btn btn-sm btn-outline-danger ms-2">
+                  <i class="bi bi-trash3-fill"></i>
+                </button>
               </div>
             </li>
           </ul>
@@ -98,6 +100,10 @@ const removeNotify = (product) => {
   }
 }
 
+const formatter = (price, local = 'zh-TW') => {
+  return price.toLocaleString(local)
+}
+
 const products = ref([
   {
     "id": 1,
@@ -137,7 +143,7 @@ const products = ref([
   {
     "id": 6,
     "name": "平板電腦",
-    "description": "10.9吋螢幕，256GB儲存空間",
+    "description": "10.9吋，256GB儲存",
     "price": 18900,
     "image": "https://images.unsplash.com/photo-1628591459313-a64214c5bfac?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fHRhYmxldHxlbnwwfHwwfHx8MA%3D%3D"
   }
