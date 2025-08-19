@@ -11,8 +11,18 @@
               <div class="card-body">
                 <h5 class="card-title">{{ prodcut.name }}</h5>
                 <p class="card-text text-secondary">{{ prodcut.description }}</p>
-                <p class="fw-bold text-primary">$ {{ formatter(prodcut.price) }}</p>
-                <button @click.prevent="cartAdd(prodcut)" class="btn btn-success w-100"> 加入購物車 </button>
+                <p class="d-flex justify-content-between align-items-end">
+                  <span class="fw-bold text-primary">$ {{ formatter(prodcut.price) }}</span>
+                  <small class="text-end text-muted">
+                    庫存:
+                    <span :class="prodcut.stock < 5 ? 'text-danger' : ''">
+                      {{ prodcut.stock }}
+                    </span>
+                  </small>
+                </p>
+                <button @click.prevent="cartAdd(prodcut)" :disabled="prodcut.stock === 0" class="btn btn-success w-100">
+                  加入購物車
+                </button>
               </div>
             </div>
           </div>
@@ -35,7 +45,7 @@
               </div>
               <div>
                 <span class="text-muted">$ {{ item.subtotalDisplay }}</span>
-                <button @click.prevent="cart.remove(item)" class="btn btn-sm btn-outline-danger ms-2">
+                <button @click.prevent="cartRemove(item)" class="btn btn-sm btn-outline-danger ms-2">
                   <i class="bi bi-trash3-fill"></i>
                 </button>
               </div>
@@ -76,8 +86,17 @@ import { useCartStore } from '@/stores/cart'
 const cart = useCartStore()
 
 const cartAdd = (product) => {
+  product.stock--
   cart.add(product)
   addNotify(product)
+}
+
+const cartRemove = (item) => {
+  cart.remove(item)
+  const foundProduct = products.value.find(product => product.id === item.id)
+  if (foundProduct) {
+    foundProduct.stock += item.quantity
+  }
 }
 
 const notifyItems = ref([]);
@@ -110,6 +129,7 @@ const products = ref([
     "name": "耳罩式藍牙耳機",
     "description": "舒適配戴，支援降噪技術",
     "price": 2490,
+    "stock": 5,
     "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZWFycGhvbmV8ZW58MHx8MHx8fDA%3D"
   },
   {
@@ -117,6 +137,7 @@ const products = ref([
     "name": "無線藍牙音箱",
     "description": "高音質立體聲，防水設計",
     "price": 1890,
+    "stock": 0,
     "image": "https://images.unsplash.com/photo-1560701814-de5e72b8d346?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cG9ydGFibGUlMjBzcGVha2VyJTIwZ3JlZW58ZW58MHx8MHx8fDA%3D"
   },
   {
@@ -124,6 +145,7 @@ const products = ref([
     "name": "智慧型手機",
     "description": "6.1吋螢幕，雙鏡頭設計",
     "price": 15990,
+    "stock": 8,
     "image": "https://images.unsplash.com/photo-1648962495517-8398a95fe12f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTA3fHxjZWxsJTIwcGhvbmV8ZW58MHx8MHx8fDA%3D"
   },
   {
@@ -131,6 +153,7 @@ const products = ref([
     "name": "機械鍵盤",
     "description": "青軸手感，RGB背光",
     "price": 3290,
+    "stock": 3,
     "image": "https://plus.unsplash.com/premium_photo-1685312182226-20af33367686?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fGtleWJvYXJkfGVufDB8fDB8fHww"
   },
   {
@@ -138,6 +161,7 @@ const products = ref([
     "name": "智慧手錶",
     "description": "健康監測，多種運動模式",
     "price": 4990,
+    "stock": 7,
     "image": "https://images.unsplash.com/photo-1557438159-51eec7a6c9e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHNtYXJ0JTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D"
   },
   {
@@ -145,6 +169,7 @@ const products = ref([
     "name": "平板電腦",
     "description": "10.9吋，256GB儲存",
     "price": 18900,
+    "stock": 2,
     "image": "https://images.unsplash.com/photo-1628591459313-a64214c5bfac?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fHRhYmxldHxlbnwwfHwwfHx8MA%3D%3D"
   }
 ])
