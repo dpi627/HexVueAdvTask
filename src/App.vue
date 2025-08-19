@@ -12,7 +12,7 @@
                 <h5 class="card-title">{{ prodcut.name }}</h5>
                 <p class="card-text text-secondary">{{ prodcut.description }}</p>
                 <p class="fw-bold text-primary">$ {{ prodcut.price }}</p>
-                <button @click.prevent="cart.add(prodcut)" class="btn btn-success w-100"> 加入購物車 </button>
+                <button @click.prevent="cartAdd(prodcut)" class="btn btn-success w-100"> 加入購物車 </button>
               </div>
             </div>
           </div>
@@ -49,15 +49,18 @@
       </div>
     </div>
 
-    <!-- 通知元件 -->
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-      <div class="toast show align-items-center text-white bg-success border-0">
-        <div class="d-flex">
-          <div class="toast-body">這是通知訊息</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto"></button>
+    <template v-for="product in notifyItems" :key="product.id">
+      <!-- 通知元件 -->
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+        <div class="toast show align-items-center text-white bg-success border-0">
+          <div class="d-flex">
+            <div class="toast-body">{{ product.name }} 已加入購物車</div>
+            <button @click.prevent="removeNotify(product)" type="button"
+              class="btn-close btn-close-white me-2 m-auto"></button>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -66,6 +69,24 @@ import { ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
 
 const cart = useCartStore()
+
+const cartAdd = (product) => {
+  cart.add(product)
+  addNotify(product)
+}
+
+const notifyItems = ref([]);
+
+const addNotify = (product) => {
+  notifyItems.value.push({
+    ...product,
+    id: new Date().getTime()
+  });
+}
+
+const removeNotify = (product) => {
+  notifyItems.value.pop(product)
+}
 
 const products = ref([
   {
