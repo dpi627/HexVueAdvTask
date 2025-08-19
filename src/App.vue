@@ -49,18 +49,21 @@
       </div>
     </div>
 
-    <template v-for="product in notifyItems" :key="product.id">
-      <!-- 通知元件 -->
-      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-        <div class="toast show align-items-center text-white bg-success border-0">
-          <div class="d-flex">
-            <div class="toast-body">{{ product.name }} 已加入購物車</div>
-            <button @click.prevent="removeNotify(product)" type="button"
-              class="btn-close btn-close-white me-2 m-auto"></button>
+    <!-- 通知容器 -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050">
+      <div v-for="product in notifyItems" :key="product.id"
+        class="toast show align-items-center text-white bg-success border-0 mb-2 mt-2">
+        <div class="d-flex align-items-center">
+          <img :src="product.image" :alt="product.name" class="toast-thumbnail ms-2 me-1">
+          <div class="toast-body">
+            <span class="text-warning">{{ product.name }} </span>
+            已加入購物車
           </div>
+          <button @click.prevent="removeNotify(product)" type="button"
+            class="btn-close btn-close-white me-2 m-auto"></button>
         </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -89,7 +92,10 @@ const addNotify = (product) => {
 }
 
 const removeNotify = (product) => {
-  notifyItems.value.pop(product)
+  const index = notifyItems.value.findIndex(item => item.id === product.id)
+  if (index !== -1) {
+    notifyItems.value.splice(index, 1)
+  }
 }
 
 const products = ref([
@@ -154,5 +160,23 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #dee2e6;
+}
+
+.toast-container {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.toast {
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.toast-thumbnail {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #dee2e6;
 }
 </style>
