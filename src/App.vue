@@ -3,30 +3,7 @@
     <div class="row">
       <!-- 商品列表區 -->
       <div class="col-md-8">
-        <h2 class="mb-3">商品列表</h2>
-        <div class="row">
-          <div v-for="prodcut in products" :key="prodcut.id" class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img :src="prodcut.image" class="card-img-top">
-              <div class="card-body">
-                <h5 class="card-title">{{ prodcut.name }}</h5>
-                <p class="card-text text-secondary">{{ prodcut.description }}</p>
-                <p class="d-flex justify-content-between align-items-end">
-                  <span class="fw-bold text-primary">$ {{ formatter(prodcut.price) }}</span>
-                  <small class="text-end text-muted">
-                    庫存:
-                    <span :class="prodcut.stock < 5 ? 'text-danger' : ''">
-                      {{ prodcut.stock }}
-                    </span>
-                  </small>
-                </p>
-                <button @click.prevent="cartAdd(prodcut)" :disabled="prodcut.stock === 0" class="btn btn-success w-100">
-                  加入購物車
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProductList :products="products" />
       </div>
 
       <!-- 購物車區 -->
@@ -82,14 +59,15 @@
 <script setup>
 import { ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
+import ProductList from './components/ProductList.vue'
 
 const cart = useCartStore()
 
-const cartAdd = (product) => {
-  product.stock--
-  cart.add(product)
-  addNotify(product)
-}
+// const cartAdd = (product) => {
+//   product.stock--
+//   cart.add(product)
+//   addNotify(product)
+// }
 
 const cartRemove = (item) => {
   cart.remove(item)
@@ -119,9 +97,9 @@ const removeNotify = (product) => {
   }
 }
 
-const formatter = (price, local = 'zh-TW') => {
-  return price.toLocaleString(local)
-}
+// const formatter = (price, local = 'zh-TW') => {
+//   return price.toLocaleString(local)
+// }
 
 const products = ref([
   {
@@ -180,10 +158,10 @@ body {
   background: #f2f2f2f2;
 }
 
-.card-img-top {
+/* .card-img-top {
   height: 150px;
   object-fit: cover;
-}
+} */
 
 .cart-item-thumbnail {
   width: 50px;
