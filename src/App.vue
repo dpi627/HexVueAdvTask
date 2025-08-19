@@ -82,6 +82,10 @@ const addNotify = (product) => {
     ...product,
     id: new Date().getTime()
   });
+
+  setTimeout(() => {
+    notifyItems.value.shift()
+  }, 3000)
 }
 
 const removeNotify = (product) => {
