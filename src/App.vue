@@ -37,7 +37,7 @@ const products = ref([
     "name": "耳罩式藍牙耳機",
     "description": "舒適配戴，支援降噪技術",
     "price": 2490,
-    "stock": 5,
+    "stock": 6,
     "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZWFycGhvbmV8ZW58MHx8MHx8fDA%3D"
   },
   {
@@ -53,7 +53,7 @@ const products = ref([
     "name": "智慧型手機",
     "description": "6.1吋螢幕，雙鏡頭設計",
     "price": 15990,
-    "stock": 8,
+    "stock": 12,
     "image": "https://images.unsplash.com/photo-1648962495517-8398a95fe12f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTA3fHxjZWxsJTIwcGhvbmV8ZW58MHx8MHx8fDA%3D"
   },
   {
