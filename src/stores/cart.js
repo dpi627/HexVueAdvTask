@@ -5,12 +5,11 @@ export const useCartStore = defineStore('cart', () => {
   const items = ref([])
 
   const add = (product) => {
-    const current = getItem(product)
+    const current = items.value.find((item) => item.id === product.id)
 
     if (current) {
       current.quantity++
       current.subtotal = current.quantity * current.price
-      current.subtotalDisplay = formatter(current.subtotal)
       return
     }
 
@@ -18,7 +17,6 @@ export const useCartStore = defineStore('cart', () => {
       ...product,
       quantity: 1,
       subtotal: product.price,
-      subtotalDisplay: formatter(product.price),
     })
   }
 
@@ -32,28 +30,16 @@ export const useCartStore = defineStore('cart', () => {
   const totalPrice = computed(() => {
     return items.value.reduce((total, item) => total + item.subtotal, 0)
   })
-  const totalPriceDisplay = computed(() => {
-    return formatter(totalPrice.value)
-  })
 
   const totalCount = computed(() => {
     return items.value ? items.value.length : 0
   })
-
-  const getItem = (product) => {
-    return items.value.find((item) => item.id === product.id)
-  }
-
-  const formatter = (price, local = 'zh-TW') => {
-    return price.toLocaleString(local)
-  }
 
   return {
     items,
     add,
     remove,
     totalPrice,
-    totalPriceDisplay,
     totalCount,
   }
 })
