@@ -8,7 +8,7 @@
           <h5 class="card-title">{{ prodcut.name }}</h5>
           <p class="card-text text-secondary">{{ prodcut.description }}</p>
           <p class="d-flex justify-content-between align-items-end">
-            <span class="fw-bold text-primary">$ {{ formatter(prodcut.price) }}</span>
+            <span class="fw-bold text-primary">$ {{ formatPrice(prodcut.price) }}</span>
             <small class="text-end text-muted">
               庫存:
               <span :class="prodcut.stock < 5 ? 'text-danger' : ''">
@@ -31,6 +31,7 @@
 <script setup>
 import { defineProps } from 'vue' // 可省略但建議加上
 import { useCartStore } from '@/stores/cart'
+import { formatPrice } from '@/utils/priceFormatter'
 
 // defineProps(['products']) // 可用縮寫
 defineProps({
@@ -46,10 +47,6 @@ const cartAdd = (product) => {
   product.stock--
   cart.add(product)
   // addNotify(product)
-}
-
-const formatter = (price, local = 'zh-TW') => {
-  return price.toLocaleString(local)
 }
 </script>
 
