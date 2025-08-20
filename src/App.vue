@@ -13,15 +13,15 @@
     </div>
 
     <!-- 通知容器 -->
-    <ToastNotify />
+    <ToastNotify :notify-limit="5" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import ToastNotify from '@/components/ToastNotify.vue'
 import ProductList from '@/components/ProductList.vue'
 import CartList from '@/components/CartList.vue'
-import ToastNotify from './components/ToastNotify.vue'
 
 // 處理產品庫存，接收來自內層資料並返回庫存數量
 const handleProductStock = (cartRemoveItem) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050">
-    <template v-if="toast.totalCount <= 5">
+    <template v-if="toast.totalCount <= props.notifyLimit">
       <div v-for="product in notifyItems" :key="product.id" class="toast show border-0 mb-2 mt-2">
         <div class="d-flex align-items-center text-white bg-success rounded">
           <img :src="product.image" :alt="product.name" class="toast-thumbnail ms-2 me-1">
@@ -22,7 +22,16 @@
 </template>
 
 <script setup>
+import { defineProps } from 'vue';
 import { useToastNotify } from '@/stores/toast';
+
+const props = defineProps({
+  // 通知訊息上限，避免連續通知干擾畫面
+  notifyLimit: {
+    type: Number,
+    default: () => 3
+  }
+})
 
 const toast = useToastNotify()
 
