@@ -31,22 +31,25 @@
 <script setup>
 import { defineProps } from 'vue' // 可省略但建議加上
 import { useCartStore } from '@/stores/cart'
+import { useToastNotify } from '@/stores/toast'
 import { formatPrice } from '@/utils/priceFormatter'
 
-// defineProps(['products']) // 可用縮寫
+// 定義 props 類型與預設值
 defineProps({
   products: {
     type: Array,
     default: () => []
   }
 })
+// defineProps(['products']) // 可用縮寫(不指定類型)
 
 const cart = useCartStore()
+const toast = useToastNotify()
 
 const cartAdd = (product) => {
   product.stock--
   cart.add(product)
-  // addNotify(product)
+  toast.add(product)
 }
 </script>
 
