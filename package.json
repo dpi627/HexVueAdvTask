@@ -17,6 +17,7 @@
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
     "pinia": "^3.0.3",
+    "sweetalert2": "^11.22.4",
     "vue": "^3.5.18"
   },
   "devDependencies": {

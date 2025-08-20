@@ -32,6 +32,7 @@
 import { defineEmits } from 'vue' // 可省略但建議加上
 import { useCartStore } from '@/stores/cart'
 import { formatPrice } from '@/utils/priceFormatter'
+import Swal from 'sweetalert2'
 
 const cart = useCartStore()
 
@@ -39,8 +40,19 @@ const cart = useCartStore()
 const emits = defineEmits(['return-stock'])
 
 const cartRemove = (item) => {
-  cart.remove(item)
-  emits('return-stock', item) // 設定事件(名稱)與對應資料
+  Swal.fire({
+    title: '確定移除',
+    text: `移除商品：${item.name}`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: '移除',
+    cancelButtonText: '取消',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cart.remove(item)
+      emits('return-stock', item) // 設定事件(名稱)與對應資料
+    }
+  })
 }
 </script>
 
