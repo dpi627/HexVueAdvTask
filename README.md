@@ -16,6 +16,9 @@
 
 ![](./assets/screenshot.png)
 
+> [!IMPORTANT]
+> 上圖為成品，線上 Live Demo 請至 https://dpi627.github.io/HexVueAdvTask/
+
 # 🎯任務描述
 
 進階任務 - 元件拆分與資料傳遞
