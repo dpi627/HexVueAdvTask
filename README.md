@@ -31,7 +31,7 @@
 
 - 參考[基本版型](https://codepen.io/hexschool/pen/EaVwgmK)，導入相關樣式
 - 檢索[開源圖資](https://unsplash.com/)，蒐集產品圖片
-- 生成測試產品資料
+- 製作測試產品資料
 
 <details>
 <summary>🗃️測試資料(JSON)</summary>
@@ -134,12 +134,13 @@ src/
     └── priceFormatter.js   # 價格千分位格式化函數
 ```
 
-# 🤖AI輔助
+# 🤖AI 輔助
 
 ![](./assets/ai-support.png)
 
-- AI 介入成分低，並關閉自動完成改人工撰寫，希望獲取更好學習成效
-- AI 主要用於輔助生成 conventional commit message 與以下圖表製作
+- AI 介入成分低，上圖是 8/20 資訊，24 小時重置
+- 開發期間關閉自動完成改人工撰寫，希望獲取更好學習成效
+- AI 主要用於生成 commit message 與以下圖表製作，非任務主軸要求
 
 ## 元件關係圖
 
