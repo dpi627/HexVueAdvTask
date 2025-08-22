@@ -150,40 +150,45 @@ src/
 ```mermaid
 graph TB
     subgraph "Vue Application"
-        App["App.vue<br/>主應用元件"]
+        App["App.vue<br/>主應用元件<br/>(provide 通知功能)"]
 
         subgraph "Components"
-            PL["ProductList.vue<br/>商品列表"]
-            CL["CartList.vue<br/>購物車"]
-            TN["ToastNotify.vue<br/>通知"]
+            PL["ProductList.vue<br/>商品列表<br/>(inject notifyAdd)"]
+            CL["CartList.vue<br/>購物車<br/>(emit return-stock)"]
+            TN["ToastNotify.vue<br/>通知<br/>(inject 通知功能)"]
         end
 
         subgraph "Stores (Pinia)"
             CS["cart.js<br/>購物車狀態"]
-            TS["toast.js<br/>通知狀態"]
         end
 
         subgraph "Utils"
             PF["priceFormatter.js<br/>價格格式化"]
         end
+
+        subgraph "Provide/Inject"
+            PI["notifyItems<br/>notifyAdd<br/>notifyRemove"]
+        end
     end
 
     App -->|props: products| PL
-    App -->|return-stock| CL
+    App -->|emit: return-stock| CL
     App --> TN
 
+    App -.->|provide| PI
+    PI -.->|inject| PL
+    PI -.->|inject| TN
+
     PL --> CS
-    PL --> TS
     CL --> CS
-    TN --> TS
 
     PL --> PF
     CL --> PF
 
     style App fill:#e1f5fe
     style CS fill:#fff3e0
-    style TS fill:#fff3e0
     style PF fill:#f3e5f5
+    style PI fill:#e8f5e8
 ```
 
 ## 加入購物車流程
@@ -193,7 +198,7 @@ sequenceDiagram
     participant U as 使用者
     participant PL as ProductList
     participant CS as CartStore
-    participant TS as ToastStore
+    participant App as App.vue
     participant TN as ToastNotify
 
     U->>PL: 點擊加入購物車
@@ -201,13 +206,13 @@ sequenceDiagram
     PL->>PL: 減少商品庫存
     PL->>CS: cart.add(product)
     CS->>CS: 更新購物車項目
-    PL->>TS: toast.add(product)
-    TS->>TS: 新增通知項目
-    TS->>TN: 觸發通知顯示
+    PL->>App: notifyAdd(product) (inject)
+    App->>App: 新增通知項目
+    App->>TN: 觸發通知顯示 (provide)
     TN->>U: 顯示成功通知
 
-    Note over TS,TN: 3秒後自動移除通知
-    TS-->>TN: 自動移除通知
+    Note over App,TN: 3秒後自動移除通知
+    App-->>TN: 自動移除通知
 ```
 
 ## 刪除購物車商品流程
@@ -248,12 +253,12 @@ stateDiagram-v2
 
     state ToastNotify {
         [*] --> 等待通知
-        等待通知 --> 顯示通知 : 新增商品
+        等待通知 --> 顯示通知 : 新增商品 (inject)
         顯示通知 --> 檢查上限
         檢查上限 --> 正常顯示 : 未達上限
         檢查上限 --> 上限警告 : 超過上限
-        正常顯示 --> 自動移除 : 3秒後
-        正常顯示 --> 手動移除 : 點擊關閉
+        正常顯示 --> 自動移除 : 3秒後 (App.vue)
+        正常顯示 --> 手動移除 : 點擊關閉 (inject)
         上限警告 --> 等待通知
         自動移除 --> 等待通知
         手動移除 --> 等待通知
@@ -283,7 +288,7 @@ erDiagram
         number subtotal
     }
 
-    ToastItem {
+    NotifyItem {
         number id PK
         string name
         string image
@@ -300,16 +305,17 @@ erDiagram
         number totalCount
     }
 
-    ToastStore {
-        array items
-        number totalCount
+    AppProvide {
+        array notifyItems
+        function notifyAdd
+        function notifyRemove
     }
 
     Product ||--o{ CartItem : "加入購物車"
-    Product ||--o{ ToastItem : "產生通知"
+    Product ||--o{ NotifyItem : "產生通知"
     ProductStore ||--o{ Product : "包含"
     CartStore ||--o{ CartItem : "管理"
-    ToastStore ||--o{ ToastItem : "管理"
+    AppProvide ||--o{ NotifyItem : "管理 (provide/inject)"
 ```
 
 # 📚Resource
