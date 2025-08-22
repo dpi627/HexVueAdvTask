@@ -29,9 +29,8 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue' // 可省略但建議加上
+import { defineProps, inject } from 'vue' // 可省略但建議加上
 import { useCartStore } from '@/stores/cart'
-import { useToastNotify } from '@/stores/toast'
 import { formatPrice } from '@/utils/priceFormatter'
 
 // 定義 props 類型與預設值
@@ -44,13 +43,15 @@ defineProps({
 // defineProps(['products']) // 可用縮寫(不指定類型)
 
 const cart = useCartStore()
-const toast = useToastNotify()
 
 const cartAdd = (product) => {
   product.stock--
   cart.add(product)
-  toast.add(product)
+  notifyAdd(product)
 }
+
+// 定義注入的變數或方法，給定預設值避免異常
+const notifyAdd = inject('notifyAdd', () => { })
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050">
-    <template v-if="toast.totalCount <= props.notifyLimit">
+    <template v-if="notifyItems.length <= props.notifyLimit">
       <div v-for="product in notifyItems" :key="product.id" class="toast show border-0 mb-2 mt-2">
         <div class="d-flex align-items-center text-white bg-success rounded">
           <img :src="product.image" :alt="product.name" class="toast-thumbnail ms-2 me-1">
@@ -8,7 +8,7 @@
             <span class="text-warning">{{ product.name }} </span>
             已加入購物車
           </div>
-          <button @click.prevent="toast.remove(product)" type="button"
+          <button @click.prevent="notifyRemove(product)" type="button"
             class="btn-close btn-close-white me-2 m-auto"></button>
         </div>
       </div>
@@ -22,8 +22,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import { useToastNotify } from '@/stores/toast';
+import { defineProps, inject } from 'vue';
 
 const props = defineProps({
   // 通知訊息上限，避免連續通知干擾畫面
@@ -33,9 +32,9 @@ const props = defineProps({
   }
 })
 
-const toast = useToastNotify()
-
-const notifyItems = toast.items;
+// 定義注入的變數或方法，給定預設值避免異常
+const notifyItems = inject('notifyItems', [])
+const notifyRemove = inject('notifyRemove', () => { })
 </script>
 
 <style scoped>

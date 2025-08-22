@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import ToastNotify from '@/components/ToastNotify.vue'
 import ProductList from '@/components/ProductList.vue'
 import CartList from '@/components/CartList.vue'
@@ -30,6 +30,36 @@ const handleProductStock = (cartRemoveItem) => {
     product.stock += cartRemoveItem.quantity
   }
 }
+
+//=== provide & inject 版本
+
+const notifyItems = ref([])
+
+const notifyAdd = (notify) => {
+  notifyItems.value.push({
+    ...notify,
+    id: new Date().getTime(),
+  })
+
+  setTimeout(() => {
+    notifyItems.value.shift()
+  }, 3000)
+}
+
+const notifyRemove = (notify) => {
+  const index = notifyItems.value.findIndex((item) => item.id === notify.id)
+  if (index !== -1) {
+    notifyItems.value.splice(index, 1)
+  }
+}
+
+// 定義要開放(提供 provide)的變數或方法，設定 key
+// (可使用 Symbol 避免 key 名稱衝突問題)
+provide('notifyItems', notifyItems)
+provide('notifyAdd', notifyAdd)
+provide('notifyRemove', notifyRemove)
+
+//=== /provide & inject 版本
 
 const products = ref([
   {
